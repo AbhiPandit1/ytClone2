@@ -29,7 +29,7 @@ app.use('/api/v1/user', userRouter);
 app.use('/api/v1/video', videoRouter);
 app.use('/api/v1/comment', commentRouter);
 
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
   const status = err.status || 500;
   const message = err.message || 'Internal error';
   return res.status(status).json({

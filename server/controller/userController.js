@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import User from '../model/User.js';
+import Video from '../model/Video.js';
 import { createError } from '../Utils/error.js';
 
 //update
@@ -50,10 +51,7 @@ export const deleteUser = async (req, res, next) => {
 export const getUsers = async (req, res, next) => {
   try {
     const users = await User.find(req.params.id);
-    res.status(200).json({
-      success: true,
-      users,
-    });
+    res.status(200).json(users);
   } catch (err) {
     return next(err);
   }
@@ -63,11 +61,8 @@ export const getUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id);
 
-    res.status(200).json({
-      success: true,
-      user,
-    });
-  } catch {
+    res.status(200).json(user);
+  } catch (err) {
     return next(err);
   }
 };
@@ -101,7 +96,7 @@ export const unSubscribe = async (req, res, next) => {
       $inc: { subscribers: -1 },
     });
     res.status(200).json({
-      success:true,
+      success: true,
       message: 'Unsubscription successfull',
     });
   } catch (err) {
@@ -110,5 +105,31 @@ export const unSubscribe = async (req, res, next) => {
 };
 
 //like
+export const like = async (req, res, next) => {
+  const id = req.user.id;
+  const videoId = req.params.videoId;
+  try {
+    await Video.findByIdAndUpdate(videoId, {
+      $addToSet: { likes: id },
+      $pull: { dislikes: id },
+    });
+    res.status(200).json('The video has been liked ');
+  } catch (err) {
+    return next(err);
+  }
+};
 
 //dislike
+export const dislike = async (req, res, next) => {
+  const id = req.user.id;
+  const videoId = req.params.videoId;
+  try {
+    await Video.findByIdAndUpdate(videoId, {
+      $addToSet: { dislikes: id },
+      $pull: { likes: id },
+    });
+    res.status(200).json('The video has been disliked ');
+  } catch (err) {
+    return next(err);
+  }
+};

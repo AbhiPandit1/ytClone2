@@ -4,6 +4,7 @@ import {
   addVideo,
   addView,
   deleteVideo,
+  getAllVideo,
   getBySearch,
   getByTag,
   getVideo,
@@ -22,6 +23,7 @@ router
   .delete(verifyToken, deleteVideo);
 
 router.route('/find/:id').get(getVideo);
+router.route('/').get(getAllVideo);
 
 router.route('/view').get(addView);
 router.route('/trend').get(trend);

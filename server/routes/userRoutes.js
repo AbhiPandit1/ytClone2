@@ -1,8 +1,10 @@
 import express from 'express';
 import {
   deleteUser,
+  dislike,
   getUser,
   getUsers,
+  like,
   subscribe,
   unSubscribe,
   updateUser,
@@ -20,5 +22,9 @@ router.route('/users').get(getUsers);
 router.route('/find/:id').get(getUser);
 router.route('/sub/:id').put(verifyToken, subscribe);
 router.route('/unsub/:id').put(verifyToken, unSubscribe);
+
+router.route('/like/:videoId').put(verifyToken, like);
+
+router.route('/dislike/:videoId').put(verifyToken, dislike);
 
 export default router;

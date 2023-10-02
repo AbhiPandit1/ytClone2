@@ -45,6 +45,16 @@ export const getVideo = async (req, res, next) => {
   }
 };
 
+//All video
+export const getAllVideo = async (req, res, next) => {
+  try {
+    const videos = await Video.find();
+    res.status(200).json(videos);
+  } catch (err) {
+    return next(err);
+  }
+};
+
 //Delete Video
 export const deleteVideo = async (req, res, next) => {
   try {
